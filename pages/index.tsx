@@ -1,12 +1,15 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import Image from 'next/image';
+
+import Card from '../components/card/card';
+let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const Home: NextPage = () => {
   return (
-    <>
-      <p className="font-light h-[3000px]">Some stuff will be here soon</p>
-    </>
+    <div className="grid max-w-7xl grid-cols-3 gap-5">
+      {arr.map((el) => (
+        <Card key={el} />
+      ))}
+    </div>
   );
 };
 

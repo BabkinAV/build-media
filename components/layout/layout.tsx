@@ -8,10 +8,10 @@ interface LayoutProps {
 function Layout(props: LayoutProps) {
   return (
     <>
-      <aside className="fixed h-[100%] overflow-auto  w-[222px] bg-blue-200">
-        <MainNavigation />
-      </aside>
-      <main className="ml-[222px] bg-pink-100">{props.children}</main>
+      <MainNavigation />
+      <main className="ml-[222px] bg-pink-100">
+        <div className="pt-[29px] pl-[25px] pr-[58px]">{props.children}</div>
+      </main>
     </>
   );
 }
