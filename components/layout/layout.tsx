@@ -9,7 +9,7 @@ function Layout(props: LayoutProps) {
   return (
     <>
       <MainNavigation />
-      <main className="ml-[222px] bg-pink-100">
+      <main className="ml-[222px]">
         <div className="pt-[29px] pl-[25px] pr-[58px]">{props.children}</div>
       </main>
     </>
