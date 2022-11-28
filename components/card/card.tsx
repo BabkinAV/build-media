@@ -5,8 +5,8 @@ import myPic from '../../assets/image 1.png';
 
 const Card = () => {
   return (
-    <Link href="#">
-      <div className="h-80 rounded-[19px] bg-lightestGrey px-[20px] py-[15px]">
+    <Link href="/about">
+      <div className="h-80 rounded-[19px] bg-lightestGrey px-[20px] pt-[15px] pb-[40px] relative">
         {/* transition-all hover:translate-y-[-5px] hover:shadow-md */}
         <div className="flex flex-col h-full justify-between">
           <div>
@@ -24,6 +24,9 @@ const Card = () => {
             />
           </div>
         </div>
+				<div className='font-medium text-darkGrey'>
+					<span>Industry news</span><span className='mx-2'>&#183;</span><span>27.11.2022</span>
+				</div>
       </div>
     </Link>
   );

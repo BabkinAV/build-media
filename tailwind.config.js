@@ -12,10 +12,11 @@ module.exports = {
         sans: ['Ubuntu', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        'asphalt': '#2E3D45',
-				'orange': '#F57B0B',
-				'lightGrey': '#AFAFAF',
-				'lightestGrey': '#EDEDED'
+        asphalt: '#2E3D45',
+        orange: '#F57B0B',
+        lightGrey: '#AFAFAF',
+        lightestGrey: '#EDEDED',
+        darkGrey: '#878787',
       },
     },
   },
