@@ -15,6 +15,7 @@ module.exports = {
         asphalt: '#2E3D45',
         orange: '#F57B0B',
         lightGrey: '#AFAFAF',
+				lighterGrey: '#C7C7C7',
         lightestGrey: '#EDEDED',
         darkGrey: '#878787',
       },
