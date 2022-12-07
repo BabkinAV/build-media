@@ -1,4 +1,5 @@
-import React, { Fragment, FunctionComponent } from 'react';
+import React from 'react';
+import Footer from './footer';
 import MainNavigation from './main-navigation';
 
 interface LayoutProps {
@@ -9,9 +10,12 @@ function Layout(props: LayoutProps) {
   return (
     <>
       <MainNavigation />
-      <main className="ml-[222px]">
-        <div className="pt-[29px] pl-[25px] pr-[58px]">{props.children}</div>
-      </main>
+      <div className="ml-[222px]">
+        <main>
+          <div className="pt-[29px] pl-[25px] pr-[58px]">{props.children}</div>
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }
