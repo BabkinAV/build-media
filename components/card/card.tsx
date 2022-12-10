@@ -5,9 +5,12 @@ import myPic from '../../assets/image 1.png';
 
 interface CardProps {
   className?: string;
+	title: string;
+	excerpt: string;
+	imageLink: string;
 }
 
-const Card = ({ ...props }: CardProps) => {
+const Card = ({ title, excerpt, imageLink, ...props }: CardProps) => {
   return (
     <Link href="/about">
       <div className="relative h-80 rounded-[19px] bg-lightestGrey px-[20px] pt-[15px] pb-[40px]">
@@ -15,13 +18,13 @@ const Card = ({ ...props }: CardProps) => {
         <div className="flex h-full flex-col justify-between">
           <div>
             <h5 className="text-lg font-medium">
-              The contractor continues construction of the largest sewer in Ufa
+              {title}
             </h5>
-            <p className="font-light">The line will be approximately...</p>
+            <p className="font-light">{excerpt}</p>
           </div>
           <div className="h-[150px] w-[100%]">
             <Image
-              src={myPic}
+              src={imageLink}
               alt="Picture of the author"
               width={600}
               height={400}
