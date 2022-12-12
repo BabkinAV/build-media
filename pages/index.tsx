@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import type { NextPage } from 'next';
+import dayjs from 'dayjs';
 
 import processExcerpt from '../helpers/processStrings';
 
@@ -27,6 +28,11 @@ type Post = {
     'wp:featuredmedia': {
       source_url: string;
     }[];
+		'wp:term': {
+			id: number;
+			name: string;
+			taxonomy: string;
+		}[][]
   };
 };
 
@@ -53,12 +59,18 @@ const Home: NextPage = () => {
         let imageUrl = el._embedded['wp:featuredmedia']
           ? el._embedded['wp:featuredmedia']['0'].source_url
           :'';
+				let categoryName = el._embedded['wp:term']
+				? el._embedded['wp:term'][0][0].name
+				:'';
+				let postDate = dayjs(el.modified).format('DD.MM.YYYY');
         return (
           <Card
             key={posts.indexOf(el)}
             title={el.title.rendered}
             excerpt={processExcerpt(el.excerpt.rendered)}
             imageLink={imageUrl}
+						categoryName={categoryName}
+						postDate={postDate}
           />
         );
       })}
