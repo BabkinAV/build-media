@@ -9,6 +9,8 @@ interface CardProps {
   imageLink: string;
   categoryName: string;
   postDate: string;
+	slug: string;
+	postId: number;
 }
 
 const Card = ({
@@ -17,9 +19,11 @@ const Card = ({
   imageLink,
   categoryName,
   postDate,
+	slug
+	
 }: CardProps) => {
   return (
-    <Link href="/about">
+    <Link href={`/${slug}`}>
       <div className="relative h-80 rounded-[19px] bg-lightestGrey px-[20px] pt-[15px] pb-[40px]">
         {/* transition-all hover:translate-y-[-5px] hover:shadow-md */}
         <div className="flex h-full flex-col justify-between">

@@ -7,6 +7,7 @@ import processExcerpt from '../helpers/processStrings';
 
 import Card from '../components/card/card';
 import Pagination from '../components/pagination/pagination';
+import Spinner from '../components/icons/spinner';
 // let arr = [0, 1, 2, 3, 4, 5, 6];
 
 let pageSize = 10;
@@ -16,6 +17,7 @@ type Post = {
   id: number;
   link: string;
   modified: string;
+	slug: string
   title: {
     rendered: string;
     protected: boolean;
@@ -38,12 +40,14 @@ type Post = {
 
 const Home: NextPage = () => {
   useEffect(() => {
+		setPostsIsLoading(true);
     axios
       .get<Post[]>(
-        'http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,excerpt,title,link, modified,_links,_embedded&_embed'
+        'http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed'
       )
       .then((res) => {
         console.log(res.data);
+				setPostsIsLoading(false)
         setPosts(res.data);
       })
       .catch((error: string) => {
@@ -53,9 +57,10 @@ const Home: NextPage = () => {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [posts, setPosts] = useState<Post[]>([]);
+	const [postsIsLoading, setPostsIsLoading] = useState(true);
   return (
     <div className="grid max-w-7xl grid-cols-3 gap-5">
-      {posts.map((el) => {
+      {postsIsLoading ? <Spinner /> : posts.map((el) => {
         let imageUrl = el._embedded['wp:featuredmedia']
           ? el._embedded['wp:featuredmedia']['0'].source_url
           :'';
@@ -65,12 +70,14 @@ const Home: NextPage = () => {
 				let postDate = dayjs(el.modified).format('DD.MM.YYYY');
         return (
           <Card
-            key={posts.indexOf(el)}
+            key={el.id}
             title={el.title.rendered}
+						slug={el.slug}
             excerpt={processExcerpt(el.excerpt.rendered)}
             imageLink={imageUrl}
 						categoryName={categoryName}
 						postDate={postDate}
+						postId={el.id}
           />
         );
       })}
