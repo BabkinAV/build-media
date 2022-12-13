@@ -13,11 +13,14 @@ import Spinner from '../components/icons/spinner';
 let pageSize = 10;
 
 
-type Post = {
+export type Post = {
   id: number;
   link: string;
   modified: string;
-	slug: string
+	slug: string;
+	content?: {
+		rendered: string
+	}
   title: {
     rendered: string;
     protected: boolean;

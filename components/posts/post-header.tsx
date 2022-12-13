@@ -4,7 +4,12 @@ import Link from 'next/link';
 
 import myPic from '../../assets/header-1.jpg';
 
-const PostHeader = () => {
+interface PostHeaderProps {
+	title: string;
+	categoryName: string;
+}
+
+const PostHeader = ({title, categoryName} : PostHeaderProps) => {
   return (
     <div
       style={{
@@ -14,10 +19,10 @@ const PostHeader = () => {
     >
       <div>
         <div className="text-base font-normal leading-4 text-white">
-          <Link href="#">Industry news</Link>
+          <Link href="#">{categoryName}</Link>
         </div>
         <h2 className="text-3xl font-bold text-white py-2">
-          How entrepreneurs cope with rising prices for building materials
+					{title}
         </h2>
         <div className="text-base font-normal leading-4 text-lighterGrey">
           <Link href="#">07.12.2021</Link>
