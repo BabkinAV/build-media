@@ -72,6 +72,8 @@ const PostPage = () => {
 					categoryName={postData._embedded['wp:term'][0][0].name}
           postContent={postData.content!.rendered}
           title={postData.title.rendered}
+					postDate={postData.modified}
+					imageLink={postData._embedded['wp:featuredmedia'][0].source_url}
         />
       )}
       <div className="flex flex-col gap-5">

@@ -11,7 +11,7 @@ const items: string[] = [
   'Main',
   'Industry news',
   'Digitalization',
-  'Roads',
+  'Roadmaps',
   'Direct speech',
   'Technology',
   'Renovation',
