@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import type { NextPage } from 'next';
+import { InferGetStaticPropsType, GetStaticProps } from 'next';
 import dayjs from 'dayjs';
 
 import processExcerpt from '../helpers/processStrings';
@@ -12,15 +13,14 @@ import Spinner from '../components/icons/spinner';
 
 let pageSize = 10;
 
-
 export type Post = {
   id: number;
   link: string;
   modified: string;
-	slug: string;
-	content?: {
-		rendered: string
-	}
+  slug: string;
+  content?: {
+    rendered: string;
+  };
   title: {
     rendered: string;
     protected: boolean;
@@ -33,54 +33,59 @@ export type Post = {
     'wp:featuredmedia': {
       source_url: string;
     }[];
-		'wp:term': {
-			id: number;
-			name: string;
-			taxonomy: string;
-		}[][]
+    'wp:term': {
+      id: number;
+      name: string;
+      taxonomy: string;
+    }[][];
   };
 };
 
-const Home: NextPage = () => {
-  useEffect(() => {
-		setPostsIsLoading(true);
-    axios
-      .get<Post[]>(
-        'http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed'
-      )
-      .then((res) => {
-        console.log(res.data);
-				setPostsIsLoading(false)
-        setPosts(res.data);
-      })
-      .catch((error: string) => {
-        console.log(error);
-      });
-  }, []);
+const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  // useEffect(() => {
+  //   setPostsIsLoading(true);
+  //   axios
+  //     .get<Post[]>(
+  //       'http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed'
+  //     )
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setPostsIsLoading(false);
+  //       setPosts(res.data);
+  //     })
+  //     .catch((error: string) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [posts, setPosts] = useState<Post[]>([]);
-	const [postsIsLoading, setPostsIsLoading] = useState(true);
+  // const [posts, setPosts] = useState<Post[]>([]);
+  // const [postsIsLoading, setPostsIsLoading] = useState(true);
   return (
     <div className="grid max-w-7xl grid-cols-3 gap-5">
-      {postsIsLoading ? <Spinner /> : posts.map((el) => {
+      {/* {postsIsLoading ? (
+        <Spinner />
+      ) : (
+        null
+      )} */}
+      {posts.map((el) => {
         let imageUrl = el._embedded['wp:featuredmedia']
           ? el._embedded['wp:featuredmedia']['0'].source_url
-          :'';
-				let categoryName = el._embedded['wp:term']
-				? el._embedded['wp:term'][0][0].name
-				:'';
-				let postDate = dayjs(el.modified).format('DD.MM.YYYY');
+          : '';
+        let categoryName = el._embedded['wp:term']
+          ? el._embedded['wp:term'][0][0].name
+          : '';
+        let postDate = dayjs(el.modified).format('DD.MM.YYYY');
         return (
           <Card
             key={el.id}
             title={el.title.rendered}
-						slug={el.slug}
+            slug={el.slug}
             excerpt={processExcerpt(el.excerpt.rendered)}
             imageLink={imageUrl}
-						categoryName={categoryName}
-						postDate={postDate}
-						postId={el.id}
+            categoryName={categoryName}
+            postDate={postDate}
+            postId={el.id}
           />
         );
       })}
@@ -98,3 +103,15 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export async function getStaticProps() {
+  const res = await axios.get<Post[]>(
+    'http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed'
+  );
+
+  return {
+    props: {
+      posts: res.data,
+    }, // will be passed to the page component as props
+  };
+}
