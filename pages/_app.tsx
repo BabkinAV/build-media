@@ -9,9 +9,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<Head>
         <title>Build media</title>
       </Head>
-      <Layout>
+      {/* <Layout> */}
         <Component {...pageProps} />
-      </Layout>
+      {/* </Layout> */}
     </>
   );
 }

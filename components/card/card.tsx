@@ -40,6 +40,9 @@ const Card = ({
                 alt="Post picture"
                 fill
                 style={{objectFit: 'cover'}}
+								sizes="(max-width: 768px) 300px,
+              (max-width: 1200px) 500px,
+              800px"
               />
             )}
           </div>
