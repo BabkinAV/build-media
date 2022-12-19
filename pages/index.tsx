@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { InferGetStaticPropsType, GetStaticProps } from 'next';
+import { InferGetStaticPropsType } from 'next';
 import dayjs from 'dayjs';
 
 import processExcerpt from '../helpers/processStrings';
