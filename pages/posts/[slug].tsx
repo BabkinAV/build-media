@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Router, useRouter } from 'next/router';
+import React  from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import axios from 'axios';
 
 import Layout from '../../components/layout/layout';
 
-// import Card from '../components/card/card';
 import { Category } from '../index';
 
 import { Post } from '../index';
 import PostContent from '../../components/posts/post-content';
-import Spinner from '../../components/icons/spinner';
 
 
 const PostPage = ({
   categories,
-  postData,
+  postData
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout categories={categories}>
@@ -59,7 +56,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<{categories: Category[], postData: Post} > = async (context) => {
   let slug;
   if (context.params) {
     slug = context.params.slug;

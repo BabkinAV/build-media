@@ -50,25 +50,8 @@ export type Category = {
 
 
 const Home = ({ posts, categories }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // useEffect(() => {
-  //   setPostsIsLoading(true);
-  //   axios
-  //     .get<Post[]>(
-  //       'http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed'
-  //     )
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setPostsIsLoading(false);
-  //       setPosts(res.data);
-  //     })
-  //     .catch((error: string) => {
-  //       console.log(error);
-  //     });
-  // }, []);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [posts, setPosts] = useState<Post[]>([]);
-  // const [postsIsLoading, setPostsIsLoading] = useState(true);
   return (
     <Layout categories={categories}>
       <div className="grid max-w-7xl grid-cols-3 gap-5">
