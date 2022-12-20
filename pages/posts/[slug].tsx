@@ -12,7 +12,6 @@ import { Post } from '../index';
 import PostContent from '../../components/posts/post-content';
 import Spinner from '../../components/icons/spinner';
 
-let arr = [0, 1, 2, 3];
 
 const PostPage = ({
   categories,
@@ -43,37 +42,43 @@ const PostPage = ({
 export default PostPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const publishedPosts = await axios.get<[{ id: number; slug: string }]>(
-  //   'http://localhost/build-media/wp-json/wp/v2/posts?status=publish&_fields=id,slug'
-  // );
-  // const generatedPaths = publishedPosts.data.map(
-  //   (post) => '/posts/' + post.slug
-  // );
+  const publishedPosts = await axios.get<[{ id: number; slug: string }]>(
+    'http://localhost/build-media/wp-json/wp/v2/posts?status=publish&_fields=id,slug'
+  );
+  const publishedData = publishedPosts.data;
+  const generatedPaths = publishedData.map((post) => {
+    return {
+      params: {
+        slug: post.slug,
+      },
+    };
+  });
   return {
-    paths: [{ params: { slug: '8th-test' } }],
-    fallback: false,
+    paths: generatedPaths,
+    fallback: 'blocking',
   };
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	let slug;
-	if (context.params) {
-		slug = context.params.slug;
-		
-	} else {
-		slug = '';
-	}
-	console.log('slug: ', slug)
+  let slug;
+  if (context.params) {
+    slug = context.params.slug;
+  } else {
+    slug = '';
+  }
   const categories = await axios.get<Category[]>(
     `http://localhost/build-media/wp-json/wp/v2/categories?_fields=name,%20id,%20slug`
   );
-
 
   const fetchedPost = await axios.get<Post[]>(
     `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link,%20content,%20modified,_links,_embedded&_embed&slug=${slug}`
   );
 
-	console.log('fetched post: ', fetchedPost.data);
+  if (fetchedPost.data.length === 0) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
