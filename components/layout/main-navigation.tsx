@@ -39,7 +39,7 @@ const MainNavigation = ({categories}: {categories: Category[]}) => {
             <ul className="font-bold text-white">
               {categories.map((el) => (
                 <li key={el.id} className="mb-[6px] first:text-orange">
-                  <Link href={`category/${el.slug}`} className="hover:text-orange">
+                  <Link href={`/categories/${el.slug}`} className="hover:text-orange">
                     {el.name}
                   </Link>
                 </li>

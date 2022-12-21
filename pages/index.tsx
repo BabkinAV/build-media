@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 import { InferGetStaticPropsType } from 'next';
@@ -9,8 +9,6 @@ import processExcerpt from '../helpers/processStrings';
 import Layout from '../components/layout/layout';
 import Card from '../components/card/card';
 import Pagination from '../components/pagination/pagination';
-import Spinner from '../components/icons/spinner';
-// let arr = [0, 1, 2, 3, 4, 5, 6];
 
 let pageSize = 10;
 
@@ -105,6 +103,6 @@ export async function getStaticProps() {
     props: {
       posts: posts.data,
 			categories: categories.data
-    }, // will be passed to the page component as props
+    }, 
   };
 }

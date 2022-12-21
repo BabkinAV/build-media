@@ -23,7 +23,7 @@ const Card = ({
 	
 }: CardProps) => {
   return (
-    <Link href={`posts/${slug}`}>
+    <Link href={`/posts/${slug}`} >
       <div className="relative h-80 rounded-[19px] bg-lightestGrey px-[20px] pt-[15px] pb-[40px]">
         {/* transition-all hover:translate-y-[-5px] hover:shadow-md */}
         <div className="flex h-full flex-col justify-between">

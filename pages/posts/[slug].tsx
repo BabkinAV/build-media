@@ -81,6 +81,6 @@ export const getStaticProps: GetStaticProps<{categories: Category[], postData: P
     props: {
       categories: categories.data,
       postData: fetchedPost.data[0],
-    }, // will be passed to the page component as props
+    }, 
   };
 };
