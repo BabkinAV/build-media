@@ -5,6 +5,7 @@ import { InferGetStaticPropsType, GetStaticPaths, GetStaticProps } from 'next';
 import dayjs from 'dayjs';
 
 import processExcerpt from '../../helpers/processStrings';
+import fetchCategories from '../../helpers/fetchCategories';
 
 import Layout from '../../components/layout/layout';
 import Card from '../../components/card/card';
@@ -85,14 +86,10 @@ export const getStaticProps: GetStaticProps<{categories: Category[], posts: Post
     slug = '';
   }
   
-	const categories = await axios
-	.get<Category[]>(
-		`http://localhost/build-media/wp-json/wp/v2/categories?_fields=name,%20id,%20slug`
-	)
+	const categories = await fetchCategories();
 
 
-
-	const categoryObj = categories.data.find(el => el.slug === slug);
+	const categoryObj = categories.find(el => el.slug === slug);
 	
 	if (!categoryObj) {
 		return {
@@ -114,7 +111,7 @@ export const getStaticProps: GetStaticProps<{categories: Category[], posts: Post
   return {
     props: {
       posts: posts.data,
-			categories: categories.data
+			categories
     }, 
   };
 }
