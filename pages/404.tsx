@@ -3,6 +3,8 @@ import {  GetStaticProps, InferGetStaticPropsType } from 'next';
 import axios from 'axios';
 
 import Layout from '../components/layout/layout';
+import fetchCategories from '../helpers/fetchCategories';
+
 
 export default function Custom404({categories}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
@@ -16,13 +18,11 @@ export default function Custom404({categories}: InferGetStaticPropsType<typeof g
 
 export const getStaticProps: GetStaticProps<{categories: Category[]} > = async (context) => {
   
-  const categories = await axios.get<Category[]>(
-    `http://localhost/build-media/wp-json/wp/v2/categories?_fields=name,%20id,%20slug`
-  );
+	const categories = await fetchCategories();
 
   return {
     props: {
-      categories: categories.data,
+      categories: categories,
     }, 
   };
 };

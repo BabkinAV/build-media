@@ -6,7 +6,7 @@ const fetchCategories = async () => {
 	.get<Category[]>(
 		`http://localhost/build-media/wp-json/wp/v2/categories?_fields=name,%20id,%20slug`
 	)
-	const renderedCategories:Category[] = [{id: 0, name: 'Main', slug: 'main'}, ...categories.data];
+	const renderedCategories:Category[] = categories.data;
 
 
 	return renderedCategories;

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 // import axios from 'axios';
@@ -10,7 +11,18 @@ import EmailIcon from '../icons/email';
 import { Category } from '../../pages';
 
 
-const MainNavigation = ({categories}: {categories: Category[]}) => {
+const MainNavigation = ({categories, activeCategory}: {categories: Category[], activeCategory?: string}) => {
+	const router = useRouter();
+
+	if (router.pathname === '/categories/[slug]') {
+		activeCategory = router.query.slug as string;
+		console.log(activeCategory);
+	}
+
+
+
+	// const activeCategory = 
+
   // const [categoryData, setCategoryData] = useState<Category[]>([
   //   { id: 0, name: 'Main', slug: 'Main' },
   // ]);
@@ -37,9 +49,14 @@ const MainNavigation = ({categories}: {categories: Category[]}) => {
         <nav>
           <div className="mr-5 mt-12">
             <ul className="font-bold text-white">
+						<li key={'00'} className="mb-[6px]">
+                  <Link href={`/`} className={`hover:text-orange ${router.pathname == '/'  ?  'text-orange': '' }`}>
+                    Main
+                  </Link>
+                </li>
               {categories.map((el) => (
-                <li key={el.id} className="mb-[6px] first:text-orange">
-                  <Link href={`/categories/${el.slug}`} className="hover:text-orange">
+                <li key={el.id} className="mb-[6px]">
+                  <Link href={`/categories/${el.slug}`} className={`hover:text-orange  ${activeCategory === el.slug  ?  'text-orange': '' }`}>
                     {el.name}
                   </Link>
                 </li>

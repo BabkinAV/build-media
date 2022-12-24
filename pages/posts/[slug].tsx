@@ -3,6 +3,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import axios from 'axios';
 
 import Layout from '../../components/layout/layout';
+import fetchCategories from '../../helpers/fetchCategories';
 
 import { Category } from '../index';
 
@@ -12,10 +13,10 @@ import PostContent from '../../components/posts/post-content';
 
 const PostPage = ({
   categories,
-  postData
+  postData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout categories={categories}>
+    <Layout categories={categories} singlePostCategory={postData._embedded['wp:term'][0][0].slug}>
       <div className="grid max-w-7xl  grid-cols-[minmax(0,_2fr)_minmax(0,_1fr)] gap-5">
         <PostContent
           categoryName={postData._embedded['wp:term'][0][0].name}
@@ -63,9 +64,8 @@ export const getStaticProps: GetStaticProps<{categories: Category[], postData: P
   } else {
     slug = '';
   }
-  const categories = await axios.get<Category[]>(
-    `http://localhost/build-media/wp-json/wp/v2/categories?_fields=name,%20id,%20slug`
-  );
+
+  const categories = await fetchCategories();
 
   const fetchedPost = await axios.get<Post[]>(
     `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link,%20content,%20modified,_links,_embedded&_embed&slug=${slug}`
@@ -79,7 +79,7 @@ export const getStaticProps: GetStaticProps<{categories: Category[], postData: P
 
   return {
     props: {
-      categories: categories.data,
+      categories,
       postData: fetchedPost.data[0],
     }, 
   };

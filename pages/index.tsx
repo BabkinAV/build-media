@@ -37,6 +37,7 @@ export type Post = {
       id: number;
       name: string;
       taxonomy: string;
+			slug: string;
     }[][];
   };
 };
