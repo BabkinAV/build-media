@@ -16,12 +16,13 @@ import { Post, Category } from '..';
 let pageSize = 10;
 
 
-const CategoryPage = ({ posts, categories }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const CategoryPage = ({ posts, categories, categoryName }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   return (
     <Layout categories={categories}>
       <div className="grid max-w-7xl grid-cols-3 gap-5">
+				<div className='col-span-full text-center mb-2'><h2 className='font-bold text-3xl'>Category: {categoryName}</h2></div>
         {posts.map((el) => {
           let imageUrl = el._embedded['wp:featuredmedia']
             ? el._embedded['wp:featuredmedia']['0'].source_url
@@ -78,7 +79,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<{categories: Category[], posts: Post[]} > = async (context) => {
+export const getStaticProps: GetStaticProps<{categories: Category[], posts: Post[], categoryName: string} > = async (context) => {
 	let slug: string;
   if (context.params) {
     slug = context.params.slug as string;
@@ -111,6 +112,7 @@ export const getStaticProps: GetStaticProps<{categories: Category[], posts: Post
   return {
     props: {
       posts: posts.data,
+			categoryName: categoryObj.name,
 			categories
     }, 
   };
