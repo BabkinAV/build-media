@@ -97,10 +97,12 @@ export async function getStaticProps() {
     'http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed');
 	
 	const categories = await fetchCategories();
+	console.log('Main page revalidated!')
   return {
     props: {
       posts: posts.data,
 			categories,
     }, 
   };
+	
 }

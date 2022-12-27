@@ -77,6 +77,8 @@ export const getStaticProps: GetStaticProps<{categories: Category[], postData: P
     };
   }
 
+	console.log('Post page revalidated!');
+
   return {
     props: {
       categories,

@@ -24,12 +24,12 @@ const Card = ({
 }: CardProps) => {
   return (
     <Link href={`/posts/${slug}`} >
-      <div className="relative h-80 rounded-[19px] bg-lightestGrey px-[20px] pt-[15px] pb-[40px]">
+      <div className="relative h-80 rounded-[19px] bg-lightestGrey px-[20px] pt-[10px] pb-[40px]">
         {/* transition-all hover:translate-y-[-5px] hover:shadow-md */}
         <div className="flex h-full flex-col justify-between">
           <div>
             <h5 className="text-lg font-medium">{title}</h5>
-            <p className="font-light">{excerpt}</p>
+            <p className="font-light text-sm">{excerpt}</p>
           </div>
           <div className="relative h-[150px] w-[100%]">
             {imageLink === '' ? (

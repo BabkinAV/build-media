@@ -108,6 +108,9 @@ export const getStaticProps: GetStaticProps<{categories: Category[], posts: Post
     };
   }
 
+	console.log('Category page revalidated!');
+
+
 
   return {
     props: {
