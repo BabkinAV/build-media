@@ -11,7 +11,7 @@ import Layout from '../components/layout/layout';
 import Card from '../components/card/card';
 import Pagination from '../components/pagination/pagination';
 
-let pageSize = 6;
+const pageSize = 6;
 
 export type Post = {
   id: number;
@@ -58,10 +58,7 @@ const Home = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: resData, headers: resHeaders } = await axios.get<
-        Post[],
-        { data: Post[]; headers: { 'x-wp-total': string } }
-      >(
+      const { data: resData } = await axios.get<Post[]>(
         `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&page=${currentPage}&per_page=${pageSize}`
       );
       setPostsArr(resData);
