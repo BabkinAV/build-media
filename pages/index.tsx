@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { InferGetStaticPropsType } from 'next';
@@ -11,7 +11,7 @@ import Layout from '../components/layout/layout';
 import Card from '../components/card/card';
 import Pagination from '../components/pagination/pagination';
 
-let pageSize = 10;
+let pageSize = 6;
 
 export type Post = {
   id: number;
@@ -37,7 +37,7 @@ export type Post = {
       id: number;
       name: string;
       taxonomy: string;
-			slug: string;
+      slug: string;
     }[][];
   };
 };
@@ -48,14 +48,34 @@ export type Category = {
   slug: string;
 };
 
-
-const Home = ({ posts, categories }: InferGetStaticPropsType<typeof getStaticProps>) => {
-
+const Home = ({
+  posts,
+  categories,
+  totalPosts,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [postsArr, setPostsArr] = useState<Post[]>(posts);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: resData, headers: resHeaders } = await axios.get<
+        Post[],
+        { data: Post[]; headers: { 'x-wp-total': string } }
+      >(
+        `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&page=${currentPage}&per_page=${pageSize}`
+      );
+      setPostsArr(resData);
+    };
+
+    fetchData().catch(error => {
+      console.log((error as Error).message);
+    });
+  }, [currentPage]);
+
   return (
     <Layout categories={categories}>
       <div className="grid max-w-7xl grid-cols-3 gap-5">
-        {posts.map((el) => {
+        {postsArr.map(el => {
           let imageUrl = el._embedded['wp:featuredmedia']
             ? el._embedded['wp:featuredmedia']['0'].source_url
             : '';
@@ -81,8 +101,8 @@ const Home = ({ posts, categories }: InferGetStaticPropsType<typeof getStaticPro
             pageSize={pageSize}
             siblingCount={1}
             currentPage={currentPage}
-            onPageChange={(page) => setCurrentPage(page)}
-            totalCount={90}
+            onPageChange={page => setCurrentPage(page)}
+            totalCount={totalPosts}
           />
         </div>
       </div>
@@ -93,16 +113,25 @@ const Home = ({ posts, categories }: InferGetStaticPropsType<typeof getStaticPro
 export default Home;
 
 export async function getStaticProps() {
-  const posts = await axios.get<Post[]>(
-    'http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed');
-	
-	const categories = await fetchCategories();
-	console.log('Main page revalidated!')
+  const { data: resData, headers: resHeaders } = await axios.get<
+    Post[],
+    { data: Post[]; headers: { 'x-wp-total': string } }
+  >(
+    `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&page=1&per_page=${pageSize}`
+  );
+
+  const categories = await fetchCategories();
+
+  const totalPosts = resHeaders['x-wp-total'];
+
+  console.log(resHeaders);
+  console.log('Main page revalidated!');
   return {
     props: {
-      posts: posts.data,
-			categories,
-    }, 
+      posts: resData,
+      totalPosts: parseInt(totalPosts),
+
+      categories,
+    },
   };
-	
 }
