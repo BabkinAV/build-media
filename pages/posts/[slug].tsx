@@ -7,7 +7,7 @@ import fetchCategories from '../../helpers/fetchCategories';
 
 import { Category } from '../index';
 
-import { Post } from '../index';
+import { Post } from '../../components/posts/post-list';
 import PostContent from '../../components/posts/post-content';
 
 
@@ -26,11 +26,6 @@ const PostPage = ({
           imageLink={postData._embedded['wp:featuredmedia'][0].source_url}
         />
         <div className="flex flex-col gap-5">
-          {/* {arr.map((el) => (
-						<div className="col-start-2" key={el}>
-							<Card />
-						</div>
-					))} */}
         </div>
       </div>
     </Layout>
