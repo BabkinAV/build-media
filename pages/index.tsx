@@ -1,10 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 import { InferGetStaticPropsType } from 'next';
-import dayjs from 'dayjs';
-
-import processExcerpt from '../helpers/processStrings';
 import fetchCategories from '../helpers/fetchCategories';
 
 import Layout from '../components/layout/layout';
@@ -26,11 +23,19 @@ const Home = ({
   categories,
   totalPosts,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	const firstUpdate = useRef({'main': true});
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsArr, setPostsArr] = useState<Post[]>(posts);
   const [postsLoading, setPostsLoading] = useState<Boolean>(false);
 
+
   useEffect(() => {
+		if (firstUpdate.current['main']) {
+			console.log('firstUpdate.current: ', firstUpdate.current);
+
+			firstUpdate.current['main']= false;
+			return;
+		}
     const fetchData = async () => {
       setPostsLoading(true);
       const { data: resData } = await axios.get<Post[]>(
