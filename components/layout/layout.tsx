@@ -13,7 +13,7 @@ function Layout(props: LayoutProps) {
   return (
     <>
       <MainNavigation categories={props.categories} activeCategory={props.singlePostCategory}/>
-      <div className="ml-[222px]">
+      <div className="ml-[222px] flex flex-col min-h-screen justify-between">
         <main>
           <div className="pt-[29px] pl-[25px] pr-[58px]">{props.children}</div>
         </main>
