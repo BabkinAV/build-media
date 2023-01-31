@@ -42,7 +42,6 @@ const CategoryPage = ({
 			return;
 		}
     const fetchData = async () => {
-			console.log('data fetching started!')
       setPostsLoading(true);
       const { data: resData } = await axios.get<Post[]>(
         `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&categories=${categoryId}&page=${currentPage}&per_page=${pageSize}`
