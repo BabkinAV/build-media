@@ -1,5 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, } from 'react';
+import {useRouter} from 'next/router';
 import axios from 'axios';
+
 
 import { InferGetStaticPropsType, GetStaticPaths, GetStaticProps } from 'next';
 import fetchCategories from '../../helpers/fetchCategories';
@@ -20,33 +22,42 @@ const CategoryPage = ({
   categoryId,
   totalPosts,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const didMount = useRef({[categoryName]: false});
+	const router = useRouter();
+  const firstCategoryUpdate = useRef(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [postsArr, setPostsArr] = useState<Post[]>(posts);
+  const [postsArr, setPostsArr] = useState<Post[]>(posts);
   const [postsLoading, setPostsLoading] = useState<Boolean>(false);
 
-  // useEffect(() => {
-	// 	console.log('didMount.current: ', didMount.current);
-	// 	if (!didMount.current[categoryName]) {
-	// 		didMount.current[categoryName] = true;
-	// 		return;
-	// 	}
-  //   const fetchData = async () => {
-  //     setPostsLoading(true);
-  //     const { data: resData } = await axios.get<Post[]>(
-  //       `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&categories=${categoryId}&page=${currentPage}&per_page=${pageSize}`
-  //     );
-  //     setPostsArr(resData);
-  //   };
+	useEffect(() => {
 
-  //   fetchData()
-  //     .catch(error => {
-  //       console.log((error as Error).message);
-  //     })
-  //     .finally(() => {
-  //       setPostsLoading(false);
-  //     });
-  // }, [currentPage, categoryId, categoryName]);
+
+		setPostsArr(posts);
+		firstCategoryUpdate.current = true;
+
+  }, [posts])
+
+  useEffect(() => {
+		if (firstCategoryUpdate.current) {
+			firstCategoryUpdate.current = false;
+			return;
+		}
+    const fetchData = async () => {
+			console.log('data fetching started!')
+      setPostsLoading(true);
+      const { data: resData } = await axios.get<Post[]>(
+        `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&categories=${categoryId}&page=${currentPage}&per_page=${pageSize}`
+      );
+      setPostsArr(resData);
+    };
+
+    fetchData()
+      .catch(error => {
+        console.log((error as Error).message);
+      })
+      .finally(() => {
+        setPostsLoading(false);
+      });
+  }, [currentPage, categoryId, categoryName]);
   return (
     <Layout categories={categories}>
       <div className="grid max-w-7xl grid-cols-3 gap-5">
@@ -57,7 +68,7 @@ const CategoryPage = ({
           <Spinner />
         ) : (
           <PostList
-            postsArr={posts}
+            postsArr={postsArr}
             pageSize={pageSize}
             currentPage={currentPage}
             totalPosts={totalPosts}
@@ -115,7 +126,6 @@ export const getStaticProps: GetStaticProps<{
     };
   }
 
-	console.log(`http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&page=1&categories=${categoryObj.id}&per_page=${pageSize}`);
 
   const { data: resData, headers: resHeaders } = await axios.get<
     Post[],

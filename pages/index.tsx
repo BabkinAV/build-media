@@ -23,17 +23,16 @@ const Home = ({
   categories,
   totalPosts,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-	const firstUpdate = useRef({'main': true});
+	const firstUpdate = useRef(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsArr, setPostsArr] = useState<Post[]>(posts);
   const [postsLoading, setPostsLoading] = useState<Boolean>(false);
 
 
   useEffect(() => {
-		if (firstUpdate.current['main']) {
-			console.log('firstUpdate.current: ', firstUpdate.current);
+		if (firstUpdate.current) {
 
-			firstUpdate.current['main']= false;
+			firstUpdate.current = false;
 			return;
 		}
     const fetchData = async () => {
