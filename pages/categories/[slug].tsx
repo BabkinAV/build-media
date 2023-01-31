@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import { InferGetStaticPropsType, GetStaticPaths, GetStaticProps } from 'next';
 import fetchCategories from '../../helpers/fetchCategories';
+import fetchPosts from '../../helpers/fetchPosts';
 
 import Layout from '../../components/layout/layout';
 import Spinner from '../../components/icons/spinner';
@@ -43,10 +44,8 @@ const CategoryPage = ({
 		}
     const fetchData = async () => {
       setPostsLoading(true);
-      const { data: resData } = await axios.get<Post[]>(
-        `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&categories=${categoryId}&page=${currentPage}&per_page=${pageSize}`
-      );
-      setPostsArr(resData);
+			const [posts] = await fetchPosts(currentPage, pageSize, categoryId); 
+      setPostsArr(posts);
     };
 
     fetchData()
@@ -125,30 +124,27 @@ export const getStaticProps: GetStaticProps<{
     };
   }
 
+	const page = 1;
 
-  const { data: resData, headers: resHeaders } = await axios.get<
-    Post[],
-    { data: Post[]; headers: { 'x-wp-total': string } }
-  >(
-    `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&page=1&categories=${categoryObj.id}&per_page=${pageSize}`
-  );
 
-  if (resData.length === 0) {
+ const [posts, totalPosts] = await fetchPosts(page, pageSize, categoryObj.id)
+
+  if (posts.length === 0) {
     return {
       notFound: true,
     };
   }
 
-  const totalPosts = resHeaders['x-wp-total'];
+
 
   console.log('Category page revalidated!');
 
   return {
     props: {
-      posts: resData,
+      posts,
       categoryName: categoryObj.name,
       categoryId: categoryObj.id,
-      totalPosts: parseInt(totalPosts),
+      totalPosts,
       categories,
     },
   };

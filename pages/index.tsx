@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { InferGetStaticPropsType } from 'next';
 import fetchCategories from '../helpers/fetchCategories';
+import fetchPosts from '../helpers/fetchPosts';
 
 import Layout from '../components/layout/layout';
 import PostList from '../components/posts/post-list';
@@ -37,10 +38,8 @@ const Home = ({
 		}
     const fetchData = async () => {
       setPostsLoading(true);
-      const { data: resData } = await axios.get<Post[]>(
-        `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&page=${currentPage}&per_page=${pageSize}`
-      );
-      setPostsArr(resData);
+      const [posts] = await fetchPosts(currentPage, pageSize)
+      setPostsArr(posts);
     };
 
     fetchData()
@@ -74,24 +73,21 @@ const Home = ({
 export default Home;
 
 export async function getStaticProps() {
-  const { data: resData, headers: resHeaders } = await axios.get<
-    Post[],
-    { data: Post[]; headers: { 'x-wp-total': string } }
-  >(
-    `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&page=1&per_page=${pageSize}`
-  );
+ 
 
   const categories = await fetchCategories();
 
-  const totalPosts = resHeaders['x-wp-total'];
+	const page = 1;
 
-  console.log(resHeaders);
+	const [posts, totalPosts] = await fetchPosts(page, pageSize)
+
+
+
   console.log('Main page revalidated!');
   return {
     props: {
-      posts: resData,
-      totalPosts: parseInt(totalPosts),
-
+      posts,
+      totalPosts,
       categories,
     },
   };
