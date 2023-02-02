@@ -58,7 +58,7 @@ const CategoryPage = ({
   }, [currentPage, categoryId, categoryName]);
   return (
     <Layout categories={categories}>
-      <div className="grid max-w-7xl grid-cols-3 gap-5">
+      <div className="grid max-w-7xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <div className="col-span-full mb-2 text-center">
           <h2 className="text-3xl font-bold">Category: {categoryName}</h2>
         </div>
