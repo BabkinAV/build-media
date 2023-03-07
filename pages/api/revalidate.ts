@@ -7,13 +7,13 @@ export default async function handler(
   // our code will go here
   const { token, postSlug, category, postId } = req.query;
 
-	console.log('request fired!')
+	// console.log('request fired!')
 
-	console.log('Query token: ', token);
-	console.log('postSlug: ', postSlug);
-	console.log('category: ', category);
-	console.log('PostId: ', postId)
-	console.log('Db token: ', process.env.REVALIDATION_TOKEN);
+	// console.log('Query token: ', token);
+	// console.log('postSlug: ', postSlug);
+	// console.log('category: ', category);
+	// console.log('PostId: ', postId)
+	// console.log('Db token: ', process.env.REVALIDATION_TOKEN);
 
   if ((token as string) !== process.env.REVALIDATION_TOKEN) {
     return res.status(401).json({ message: 'Invalid token' });

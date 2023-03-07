@@ -83,7 +83,6 @@ export async function getStaticProps() {
 
 
 
-  console.log('Main page revalidated!');
   return {
     props: {
       posts,

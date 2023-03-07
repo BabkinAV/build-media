@@ -36,7 +36,7 @@ export default PostPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const publishedPosts = await axios.get<[{ id: number; slug: string }]>(
-    'http://localhost/build-media/wp-json/wp/v2/posts?status=publish&_fields=id,slug'
+    `${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}/wp-json/wp/v2/posts?status=publish&_fields=id,slug`
   );
   const publishedData = publishedPosts.data;
   const generatedPaths = publishedData.map((post) => {
@@ -63,7 +63,7 @@ export const getStaticProps: GetStaticProps<{categories: Category[], postData: P
   const categories = await fetchCategories();
 
   const fetchedPost = await axios.get<Post[]>(
-    `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link,%20content,%20modified,_links,_embedded&_embed&slug=${slug}`
+    `${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link,%20content,%20modified,_links,_embedded&_embed&slug=${slug}`
   );
 
   if (fetchedPost.data.length === 0) {

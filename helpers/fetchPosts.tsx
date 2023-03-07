@@ -7,7 +7,8 @@ const fetchPosts: (
   categoryId?: number
 ) => Promise<[Post[], number]> = async (page = 1, pageSize = 6, categoryId) => {
 
-  let reqString = `http://localhost/build-media/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&page=${page}&per_page=${pageSize}`;
+
+  let reqString = `${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}/wp-json/wp/v2/posts?_fields=id,slug,excerpt,title,link, modified,_links,_embedded&_embed&page=${page}&per_page=${pageSize}`;
 	
   if (categoryId) {
     reqString = reqString + '&categories=' + categoryId.toString();
