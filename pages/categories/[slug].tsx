@@ -84,7 +84,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const allCategories = await axios.get<
     [{ id: number; slug: string; count: number }]
   >(
-    'http://localhost/build-media/wp-json/wp/v2/categories?_fields=id,%20slug,%20count'
+    `${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}/wp-json/wp/v2/categories?_fields=id,%20slug,%20count`
   );
   const publishedCategories = allCategories.data.filter(el => el.count > 0);
   const generatedPaths = publishedCategories.map(category => {
