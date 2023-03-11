@@ -4,11 +4,6 @@
 
 A Blog site created with NEXT js and Wordpress as headless CMS. The app features Static Site Generation with on-demand revalidation from backend. Styling is made with Tailwind CSS framework.
 
-**LIVE LINK:** [https://fascinating-dieffenbachia-27c3b9.netlify.app/](https://fascinating-dieffenbachia-27c3b9.netlify.app/) 
-
-![Build media screenshot](https://user-images.githubusercontent.com/47148325/223427661-eefe95c5-5a01-4eea-b660-1422f423484f.png)
-
-
 
 ## Tech used / dependencies
 
