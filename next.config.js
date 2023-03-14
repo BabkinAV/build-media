@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
 	images: {
-    domains: ['localhost', 'raybeckmedia.site' ],
+    domains: [process.env.NEXT_PUBLIC_IMAGE_SOURCE ],
   },
 }
 

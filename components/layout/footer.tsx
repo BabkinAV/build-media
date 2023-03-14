@@ -5,10 +5,8 @@ const Footer = () => {
     <footer className="pl-[25px] pr-[58px]">
       <div className="max-w-7xl">
         <p className='font-light text-asphalt/25 py-4 border-t text-sm text-justify mt-10'>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero eum
-          quidem sunt. Quo dolor quibusdam aspernatur nulla quae excepturi nobis
-          deleniti, velit aperiam quod tenetur, sequi eveniet atque fuga, eum
-          saepe neque corrupti vel quidem suscipit nemo officiis. Culpa enim
+					Images from <a href='https://unsplash.com/'>Unsplash</a>. All texts are courtesy of ChatGPT.<br />
+					Lorem ipsum saepe neque corrupti vel quidem suscipit nemo officiis. Culpa enim
           fuga, maiores sequi quia quaerat dolorem debitis minima reiciendis
           perferendis dicta perspiciatis! Qui ullam ratione adipisci quaerat
           accusantium facere quos.
