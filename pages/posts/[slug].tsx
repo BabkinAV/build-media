@@ -17,7 +17,7 @@ const PostPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout categories={categories} singlePostCategory={postData._embedded['wp:term'][0][0].slug}>
-      <div className="grid max-w-7xl  grid-cols-[minmax(0,_2fr)_minmax(0,_1fr)] gap-5">
+      <div className="sm:grid sm:max-w-7xl  sm:grid-cols-[minmax(0,_2fr)_minmax(0,_1fr)] sm:gap-5">
         <PostContent
           categoryName={postData._embedded['wp:term'][0][0].name}
           postContent={postData.content!.rendered}

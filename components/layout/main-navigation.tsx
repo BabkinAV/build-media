@@ -20,28 +20,8 @@ const MainNavigation = ({categories, activeCategory}: {categories: Category[], a
 	}
 
 
-
-	// const activeCategory = 
-
-  // const [categoryData, setCategoryData] = useState<Category[]>([
-  //   { id: 0, name: 'Main', slug: 'Main' },
-  // ]);
-
-  // useEffect(() => {
-  //   axios
-  //     .get<Category[]>(
-  //       `http://localhost/build-media/wp-json/wp/v2/categories?_fields=name,%20id,%20slug`
-  //     )
-  //     .then((res) => {
-  //       setCategoryData([{ id: 0, name: 'Main', slug: 'Main' }, ...res.data]);
-  //     })
-  //     .catch((error: string) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
   return (
-    <aside className="fixed h-[100%] w-[222px]  overflow-auto bg-asphalt">
+    <aside className="fixed h-[100%] w-[222px]  overflow-auto bg-asphalt hidden sm:block">
       <div className="ml-8 mr-8 mt-8 flex h-[90%] flex-col">
         <Link href="/">
           <Image src={logo} alt="Build media logo" className="max-w-full" />
