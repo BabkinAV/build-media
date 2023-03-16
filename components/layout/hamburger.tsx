@@ -6,7 +6,7 @@ const Hamburger = () => {
   return (
     <button
       className="group flex flex-col items-center justify-center "
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={() => setIsOpen(prev => !prev)}
     >
       <div
         className={`${genericHamburgerLine} mb-[3px]  ${
