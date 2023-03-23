@@ -9,6 +9,7 @@ import TelegramIcon from '../icons/telegram';
 import InstagramIcon from '../icons/instagram';
 import EmailIcon from '../icons/email';
 import { Category } from '../../pages';
+import InputSearch from './InputSearch';
 
 const MainNavigation = ({
   categories,
@@ -68,6 +69,9 @@ const MainNavigation = ({
             </ul>
           </div>
         </nav>
+				<div className='mt-5'>
+						<InputSearch />
+				</div>
         <div className="mt-auto mb-2 flex justify-start gap-10 sm:justify-between sm:gap-0">
           <FacebookIcon />
           <TelegramIcon />
