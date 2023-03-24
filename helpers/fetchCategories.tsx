@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Category } from "../pages";
 
+/** Fetch post categories from Wordpress REST API */ 
 const fetchCategories = async () => {
 	const categories = await axios
 	.get<Category[]>(

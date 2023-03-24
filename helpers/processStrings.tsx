@@ -1,3 +1,5 @@
+
+/** Sanitizes string */
 const processExcerpt = (inputStr: string): string => {
   let filteredString = inputStr.replace(
     /(<[^>]*>?)|(\/n)|(\[\&hellip\;\])/gm,

@@ -26,6 +26,7 @@ class MyDocument extends Document {
             crossOrigin=""
           />
           <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+					<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" /> 
         </Head>
         <body>
           <Main />
