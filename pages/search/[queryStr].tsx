@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import axios from 'axios';
 
 import { InferGetStaticPropsType } from 'next';
@@ -23,7 +24,7 @@ const Home = ({
   posts,
   categories,
   totalPosts,
-}: InferGetStaticPropsType<typeof getServerSideProps>) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const firstUpdate = useRef(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsArr, setPostsArr] = useState<Post[]>(posts);
@@ -70,14 +71,24 @@ const Home = ({
 
 export default Home;
 
-export async function getServerSideProps() {
+export const  getServerSideProps: GetServerSideProps<{
+  categories: Category[];
+  posts: Post[];
+  totalPosts: number;
+}, {queryStr: string}> = async context => {
+
+	const searchQuery = context.params?.queryStr.split('q=')[1];
+
+	console.log(searchQuery)
+
+
  
 
   const categories = await fetchCategories();
 
 	const page = 1;
 
-	const [posts, totalPosts] = await fetchPosts(page, pageSize, undefined, 'ngrok')
+	const [posts, totalPosts] = await fetchPosts(page, pageSize, undefined, searchQuery)
 
 
 

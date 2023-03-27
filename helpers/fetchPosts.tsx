@@ -17,7 +17,7 @@ const fetchPosts: (
 
 	 if (searchStr !== undefined) {
 		
-		reqString = reqString + '&search=ngrok';
+		reqString = reqString + '&search='+ searchStr;
 	 }
 	
   if (categoryId) {
