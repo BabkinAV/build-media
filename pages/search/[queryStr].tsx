@@ -1,14 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { useState } from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 
-import { InferGetStaticPropsType } from 'next';
 import fetchCategories from '../../helpers/fetchCategories';
 import fetchPosts from '../../helpers/fetchPosts';
 
 import Layout from '../../components/layout/layout';
 import PostList from '../../components/posts/post-list';
-import Spinner from '../../components/icons/spinner';
 
 import { Post } from '../../components/posts/post-list';
 
@@ -24,38 +23,20 @@ const Home = ({
   posts,
   categories,
   totalPosts,
+  searchQuery,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const firstUpdate = useRef(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsArr, setPostsArr] = useState<Post[]>(posts);
-  const [postsLoading, setPostsLoading] = useState<Boolean>(false);
-
-
-  // useEffect(() => {
-	// 	if (firstUpdate.current) {
-
-	// 		firstUpdate.current = false;
-	// 		return;
-	// 	}
-  //   const fetchData = async () => {
-  //     setPostsLoading(true);
-  //     const [posts] = await fetchPosts(currentPage, pageSize)
-  //     setPostsArr(posts);
-  //   };
-
-  //   fetchData()
-  //     .catch(error => {
-  //       console.log((error as Error).message);
-  //     })
-  //     .finally(() => {
-  //       setPostsLoading(false);
-  //     });
-  // }, [currentPage]);
 
   return (
     <Layout categories={categories}>
-      <div className="grid max-w-7xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        
+      <div className="grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="col-span-full mb-2 text-center">
+          <h2 className="text-3xl font-bold">
+            Your search results for: &#34;{searchQuery}&#34;
+          </h2>
+        </div>
+        {posts.length > 0 ? (
           <PostList
             postsArr={postsArr}
             pageSize={pageSize}
@@ -63,7 +44,9 @@ const Home = ({
             totalPosts={totalPosts}
             pageChangeHandler={page => setCurrentPage(page)}
           />
-        
+        ) : (
+          <p  className="text-xl">No results found</p>
+        )}
       </div>
     </Layout>
   );
@@ -71,32 +54,55 @@ const Home = ({
 
 export default Home;
 
-export const  getServerSideProps: GetServerSideProps<{
-  categories: Category[];
-  posts: Post[];
-  totalPosts: number;
-}, {queryStr: string}> = async context => {
+export const getServerSideProps: GetServerSideProps<
+  {
+    categories: Category[];
+    posts: Post[];
+    totalPosts: number;
+    searchQuery: string;
+  },
+  { queryStr: string, reqid: string }
+> = async context => {
+  const searchQueryArr = context.params?.queryStr.split('q=');
 
-	const searchQuery = context.params?.queryStr.split('q=')[1];
 
-	console.log(searchQuery)
+  if (!searchQueryArr || searchQueryArr?.length < 2) {
+    return {
+      notFound: true,
+    };
+  }
 
-
- 
+  const searchQuery = searchQueryArr[1];
 
   const categories = await fetchCategories();
 
-	const page = 1;
+  if (searchQuery === '') {
+    return {
+      props: {
+        posts: [],
+        totalPosts: 0,
+        categories,
+        searchQuery,
+      },
+    };
+  }
 
-	const [posts, totalPosts] = await fetchPosts(page, pageSize, undefined, searchQuery)
 
+  const page = 1;
 
+  const [posts, totalPosts] = await fetchPosts(
+    page,
+    pageSize,
+    undefined,
+    searchQuery
+  );
 
   return {
     props: {
       posts,
       totalPosts,
       categories,
+      searchQuery,
     },
   };
-}
+};

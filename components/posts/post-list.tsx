@@ -72,7 +72,6 @@ const PostList = ({
         );
       })}
       <div className="col-span-full mb-5 text-center">
-        {/* TODO: conditional rendering for pagination  */}
         <Pagination
           pageSize={pageSize}
           siblingCount={1}
