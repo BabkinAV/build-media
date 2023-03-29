@@ -7,7 +7,7 @@ A Blog site created with NEXT js and Wordpress as headless CMS. The app features
 **LIVE LINK:** [https://bright-bavarois-ba6912.netlify.app/](https://bright-bavarois-ba6912.netlify.app/)
 
 
-![Build-media screenshot](https://user-images.githubusercontent.com/47148325/225024620-cf7abaaa-fa09-41a0-b3a9-34af4219570b.png)
+![Build-media screenshot](https://user-images.githubusercontent.com/47148325/228553607-995ba891-56a6-4a91-be62-f14b3c2459a3.png)
 
 
 ## Tech used / dependencies
