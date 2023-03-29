@@ -1,16 +1,13 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: Ubuntu, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-     Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Ubuntu, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -20,4 +17,17 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+
+/* Patch CSS to prevent input style change on autocomplete in chrome  https://css-tricks.com/snippets/css/change-autocomplete-styles-webkit-browsers/*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+ {
+  border: 1px solid theme(colors[dimmedGrey]);
+  -webkit-text-fill-color: #EDEDED;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+	caret-color: theme(colors[dimmedGrey]);
+  transition: background-color 5000s ease-in-out 0s;
 }

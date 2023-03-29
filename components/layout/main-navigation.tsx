@@ -9,7 +9,7 @@ import TelegramIcon from '../icons/telegram';
 import InstagramIcon from '../icons/instagram';
 import EmailIcon from '../icons/email';
 import { Category } from '../../pages';
-import InputSearch from './InputSearch';
+import InputSearch from './inputSearch';
 
 const MainNavigation = ({
   categories,
@@ -42,7 +42,7 @@ const MainNavigation = ({
           />
         </Link>
         <nav>
-          <div className="sm:mr-5 mt-20 text-center sm:mt-12 sm:text-left">
+          <div className="mt-20 text-center sm:mr-5 sm:mt-12 sm:text-left">
             <ul className="font-bold text-white">
               <li key={'00'} className="mb-5 sm:mb-[6px]">
                 <Link
@@ -69,14 +69,22 @@ const MainNavigation = ({
             </ul>
           </div>
         </nav>
-				<div className='mt-5'>
-						<InputSearch />
-				</div>
+        <div className="mt-5">
+          <InputSearch />
+        </div>
         <div className="mt-auto mb-2 flex justify-start gap-10 sm:justify-between sm:gap-0">
-          <FacebookIcon />
-          <TelegramIcon />
-          <InstagramIcon />
+          <Link href="https://www.facebook.com/">
+            <FacebookIcon />
+          </Link>
+          <Link href="https://telegram.org/">
+            <TelegramIcon />
+          </Link>
+          <Link href="https://www.instagram.com/">
+            <InstagramIcon />
+          </Link>
+					<Link href="https://www.gmail.com/">
           <EmailIcon />
+					</Link>
         </div>
         <p className="mt-2 text-xs text-lightGrey">
           Created by Andrey Babkin, 2023
