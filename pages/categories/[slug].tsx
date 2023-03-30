@@ -1,7 +1,5 @@
-import { useState, useEffect, useRef, } from 'react';
-import {useRouter} from 'next/router';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-
 
 import { InferGetStaticPropsType, GetStaticPaths, GetStaticProps } from 'next';
 import fetchCategories from '../../helpers/fetchCategories';
@@ -13,6 +11,7 @@ import PostList from '../../components/posts/post-list';
 
 import { Category } from '..';
 import { Post } from '../../components/posts/post-list';
+import Loading from '../../components/Loading';
 
 const pageSize = 6;
 
@@ -23,28 +22,24 @@ const CategoryPage = ({
   categoryId,
   totalPosts,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-	const router = useRouter();
   const firstCategoryUpdate = useRef(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsArr, setPostsArr] = useState<Post[]>(posts);
   const [postsLoading, setPostsLoading] = useState<Boolean>(false);
 
-	useEffect(() => {
-
-
-		setPostsArr(posts);
-		firstCategoryUpdate.current = true;
-
-  }, [posts])
+  useEffect(() => {
+    setPostsArr(posts);
+    firstCategoryUpdate.current = true;
+  }, [posts]);
 
   useEffect(() => {
-		if (firstCategoryUpdate.current) {
-			firstCategoryUpdate.current = false;
-			return;
-		}
+    if (firstCategoryUpdate.current) {
+      firstCategoryUpdate.current = false;
+      return;
+    }
     const fetchData = async () => {
       setPostsLoading(true);
-			const [posts] = await fetchPosts(currentPage, pageSize, categoryId); 
+      const [posts] = await fetchPosts(currentPage, pageSize, categoryId);
       setPostsArr(posts);
     };
 
@@ -58,22 +53,24 @@ const CategoryPage = ({
   }, [currentPage, categoryId, categoryName]);
   return (
     <Layout categories={categories}>
-      <div className="grid max-w-7xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div className="col-span-full mb-2 text-center">
-          <h2 className="text-3xl font-bold">Category: {categoryName}</h2>
+      <Loading>
+        <div className="grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="col-span-full mb-2 text-center">
+            <h2 className="text-3xl font-bold">Category: {categoryName}</h2>
+          </div>
+          {postsLoading ? (
+            <Spinner />
+          ) : (
+            <PostList
+              postsArr={postsArr}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              totalPosts={totalPosts}
+              pageChangeHandler={page => setCurrentPage(page)}
+            />
+          )}
         </div>
-        {postsLoading ? (
-          <Spinner />
-        ) : (
-          <PostList
-            postsArr={postsArr}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            totalPosts={totalPosts}
-            pageChangeHandler={page => setCurrentPage(page)}
-          />
-        )}
-      </div>
+      </Loading>
     </Layout>
   );
 };
@@ -124,18 +121,15 @@ export const getStaticProps: GetStaticProps<{
     };
   }
 
-	const page = 1;
+  const page = 1;
 
-
- const [posts, totalPosts] = await fetchPosts(page, pageSize, categoryObj.id)
+  const [posts, totalPosts] = await fetchPosts(page, pageSize, categoryObj.id);
 
   if (posts.length === 0) {
     return {
       notFound: true,
     };
   }
-
-
 
   console.log('Category page revalidated!');
 

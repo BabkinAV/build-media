@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import axios from 'axios';
 
@@ -9,24 +9,28 @@ import { Category } from '../index';
 
 import { Post } from '../../components/posts/post-list';
 import PostContent from '../../components/posts/post-content';
-
+import Loading from '../../components/Loading';
 
 const PostPage = ({
   categories,
   postData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout categories={categories} singlePostCategory={postData._embedded['wp:term'][0][0].slug}>
+    <Layout
+      categories={categories}
+      singlePostCategory={postData._embedded['wp:term'][0][0].slug}
+    >
       <div className="sm:grid sm:max-w-7xl  sm:grid-cols-[minmax(0,_2fr)_minmax(0,_1fr)] sm:gap-5">
-        <PostContent
-          categoryName={postData._embedded['wp:term'][0][0].name}
-          postContent={postData.content!.rendered}
-          title={postData.title.rendered}
-          postDate={postData.modified}
-          imageLink={postData._embedded['wp:featuredmedia'][0].source_url}
-        />
-        <div className="flex flex-col gap-5">
-        </div>
+        <Loading>
+          <PostContent
+            categoryName={postData._embedded['wp:term'][0][0].name}
+            postContent={postData.content!.rendered}
+            title={postData.title.rendered}
+            postDate={postData.modified}
+            imageLink={postData._embedded['wp:featuredmedia'][0].source_url}
+          />
+        </Loading>
+        <div className="flex flex-col gap-5"></div>
       </div>
     </Layout>
   );
@@ -39,7 +43,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     `${process.env.NEXT_PUBLIC_BACKEND_ADDRESS}/wp-json/wp/v2/posts?status=publish&_fields=id,slug`
   );
   const publishedData = publishedPosts.data;
-  const generatedPaths = publishedData.map((post) => {
+  const generatedPaths = publishedData.map(post => {
     return {
       params: {
         slug: post.slug,
@@ -52,7 +56,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<{categories: Category[], postData: Post} > = async (context) => {
+export const getStaticProps: GetStaticProps<{
+  categories: Category[];
+  postData: Post;
+}> = async context => {
   let slug;
   if (context.params) {
     slug = context.params.slug;
@@ -72,12 +79,12 @@ export const getStaticProps: GetStaticProps<{categories: Category[], postData: P
     };
   }
 
-	console.log('Post page revalidated!');
+  console.log('Post page revalidated!');
 
   return {
     props: {
       categories,
       postData: fetchedPost.data[0],
-    }, 
+    },
   };
 };
