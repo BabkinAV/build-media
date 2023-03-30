@@ -28,6 +28,7 @@ const PostPage = ({
             title={postData.title.rendered}
             postDate={postData.modified}
             imageLink={postData._embedded['wp:featuredmedia'][0].source_url}
+						categorySlug={postData._embedded['wp:term'][0][0].slug}
           />
         </Loading>
         <div className="flex flex-col gap-5"></div>

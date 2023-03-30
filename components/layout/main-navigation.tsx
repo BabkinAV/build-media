@@ -24,7 +24,6 @@ const MainNavigation = ({
 
   if (router.pathname === '/categories/[slug]') {
     activeCategory = router.query.slug as string;
-    console.log(activeCategory);
   }
 
   return (

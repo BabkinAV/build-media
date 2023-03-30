@@ -10,9 +10,10 @@ interface PostHeaderProps {
 	categoryName: string;
 	postDate: string;
 	imageLink: string;
+	categorySlug:string;
 }
 
-const PostHeader = ({title, categoryName, postDate, imageLink} : PostHeaderProps) => {
+const PostHeader = ({title, categoryName, postDate, imageLink, categorySlug} : PostHeaderProps) => {
   return (
     <div
       style={{
@@ -22,13 +23,13 @@ const PostHeader = ({title, categoryName, postDate, imageLink} : PostHeaderProps
     >
       <div>
         <div className="text-base font-normal leading-4 text-white">
-          <Link href="#">{categoryName}</Link>
+          <Link href={`/categories/${categorySlug}`}>{categoryName}</Link>
         </div>
         <h1 className="text-3xl font-bold text-white py-2">
 					{title}
         </h1>
         <div className="text-base font-normal leading-4 text-lighterGrey">
-          <Link href="#">{dayjs(postDate).format('DD.MM.YYYY')}</Link>
+          {dayjs(postDate).format('DD.MM.YYYY')}
         </div>
       </div>
     </div>
